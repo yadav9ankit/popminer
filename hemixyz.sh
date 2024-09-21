@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 curl -s https://raw.githubusercontent.com/zunxbt/logo/main/logo.sh | bash
 
@@ -98,6 +98,9 @@ for i in "${!priv_keys[@]}"; do
     key="${priv_keys[$i]}"
     fee="${static_fees[$i]}"
 
+    # Randomly assign an IP address (this is a placeholder, replace with actual IP assignment logic)
+    random_ip="192.168.$((RANDOM % 256)).$((RANDOM % 256))"
+
     service_file="/etc/systemd/system/hemi_$i.service"
     cat << EOF | sudo tee "$service_file" > /dev/null
 [Unit]
@@ -110,6 +113,7 @@ ExecStart=$(pwd)/popmd
 Environment="POPM_BTC_PRIVKEY=$key"
 Environment="POPM_STATIC_FEE=$fee"
 Environment="POPM_BFG_URL=wss://testnet.rpc.hemi.network/v1/ws/public"
+Environment="POPM_NODE_IP=$random_ip"  # Assuming your application can utilize this
 Restart=on-failure
 
 [Install]
